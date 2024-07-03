@@ -1,0 +1,20 @@
+<div *ngFor="let dummyObject of dummyObjectArray; let listIndex=index">
+
+    <!-- <div (click)="toogleModal(listIndex)"> -->
+    <div>
+        <div class="myRowStyle">
+            <p>ID number: {{dummyObject.age}}</p>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div *ngIf="dummyObject.expanded" class="modal">
+        <!-- Modal content -->
+        <!-- <div class="modal-content">
+        <span class="close" (click)="toogleModal(listIndex, dummyObject.expanded )"></span>
+        <p>{{dummyObject.name}}</p>
+        <p>{{dummyObject.age}}</p>
+      </div> -->
+    </div>
+
+</div>

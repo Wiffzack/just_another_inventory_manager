@@ -1,0 +1,46 @@
+
+<div class="video-container" *ngIf="!error">
+	<video style="position: relative;width: 100%;" [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" 
+		autoplay></video>
+	<canvas [class.show]="isCaptured" [class.hide]="!isCaptured" #canvas id="canvas" [width]="WIDTH"
+		[height]="HEIGHT"></canvas>
+</div>
+
+<div class="snap-container">
+	<button class="btn btn-primary boton-elegante" *ngIf="!isCaptured" (click)="capture()">Snap Photo</button>
+	<button class="btn btn-danger" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button>
+
+	<div *ngIf="error" class="text-danger mt-4">
+		{{ error }}. Please click refresh on stackblitz
+		<div class="mt-5">
+			<img src="https://trungk18.com/7e0976255739e721501803ee074f1f94/camera.gif" />
+		</div>
+	</div>
+</div>
+
+<div id="first_popup" class="popup" role="alert" #popupDiv>
+	<div class="popup-container">
+		<a (click)="reload()" class="popup-close img-replace">Close</a>
+		<p>{{ocr_text}}</p>
+		<button (click)="toggleSecondInput()">Bestätigen</button>
+		<button (click)="reload()" routerLink="/ocr"  >Löschen</button>
+	</div>
+</div>
+<div id="second_popup" class="popup" role="alert" #popupDiv2>
+	<div class="popup-container">
+		<a (click)="reload()"  class="popup-close img-replace">Close</a>
+		<td><mat-form-field class="example-full-width center">
+				<!-- <mat-label>Menge</mat-label> -->
+				<input [(ngModel)]="second_input_value"  matInput #postalCode maxlength="5" placeholder="1" value="1">
+				<mat-hint align="end"></mat-hint>
+			</mat-form-field></td>
+		<button (click)="reload()" routerLink="/ocr" (click)="add_new_entry()">Bestätigen</button>
+		<button (click)="reload()" routerLink="/ocr" >Löschen</button>
+	</div>
+</div>
+
+<ul class="list-unstyled">
+	<!-- <li *ngFor="let src of captures; let idx = index" (click)="setPhoto(idx,$event,popupDiv)">
+		<img [src]="src" height="50" />
+	</li> -->
+</ul>

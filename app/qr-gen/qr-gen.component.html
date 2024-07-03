@@ -1,0 +1,47 @@
+<div style="text-align:center">
+	<div style="text-align:center">
+		<qrcode [qrdata]="userInput" [errorCorrectionLevel]="'M'" [width]="selectedWidth" [scale]="selectedFontSize"
+			[margin]="selectedMargins" [colorDark]="colorDark"></qrcode>
+	</div>
+
+	<br/>
+
+	<div class="optionblock">
+		<div class="selection">
+			<label for="barcode">Barcode Data:</label>
+			<input class="form-control" id="userInput" name="userInput" type="text" [(ngModel)]="userInput" value="1234" placeholder="Enter Barcode" autofocus="">
+		</div>
+
+
+			<div class="selection">
+				<label for="width">Barcode Color:
+     <input maxlength="9" size="9" id="colorDark" name="colorDark" type="text" [(ngModel)]="colorDark" (focus)="this.colorDark = color" (focusout)="this.colorDark = color" />
+    </label>
+			</div>
+
+
+			<div class="selection">
+				<label for="width">Width:
+      <select name="width" id="width" [(ngModel)]="selectedWidth">
+        <option [ngValue]="j" *ngFor="let j of widths">{{ j }}</option>
+      </select>
+    </label>
+			</div>
+			<div class="selection">
+				<label for="margin">Margin:
+      <select name="margin" id="margin" [(ngModel)]="selectedMargins">
+        <option [ngValue]="i" *ngFor="let i of margins">{{ i }}</option>
+      </select>
+    </label>
+			</div>
+			<div class="selection">
+				<label for="fontSize">Scale Size:
+      <select name="fontSize" id="fontSize" [(ngModel)]="selectedFontSize">
+        <option [ngValue]="i" *ngFor="let i of fontSizes">{{ i }}</option>
+      </select>
+    </label>
+			</div>
+
+		</div>
+
+	</div>

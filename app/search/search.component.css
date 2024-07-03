@@ -1,0 +1,95 @@
+table {
+    width: 100%;
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+
+.boton-elegante {
+    zoom: 5;
+    margin-bottom: 30px;
+    padding: 15px 30px;
+    border: 2px solid #2c2c2c;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.4s ease;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    font-weight: bold;
+  }
+  
+  .boton-elegante::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    transform: scale(0);
+    transition: transform 0.5s ease;
+  }
+  
+  .boton-elegante:hover::after {
+    transform: scale(4);
+  }
+  
+  .boton-elegante:hover {
+    border-color: #666666;
+    background: #292929;
+  }
+  
+
+
+
+
+
+  .container-btn-file1 {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: #307750;
+    color: #fff;
+    border-style: none;
+    padding: 1em 2em;
+    border-radius: 0.5em;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 4px 8px 10px -3px rgba(0, 0, 0, 0.356);
+    transition: all 250ms;
+  }
+  .container-btn-file1 input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .container-btn-file1 > svg {
+    margin-right: 1em;
+  }
+  .container-btn-file1::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 0;
+    border-radius: 0.5em;
+    background-color: #469b61;
+    z-index: -1;
+    transition: all 350ms;
+  }
+  .container-btn-file1:hover::before {
+    width: 100%;
+  }
