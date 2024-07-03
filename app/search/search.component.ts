@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import axios from 'axios';
 import { MatTableModule } from '@angular/material/table';
@@ -9,7 +9,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import * as XLSX from 'xlsx';
-import { FormBuilder, FormControl, FormGroup,Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatMenuTrigger } from '@angular/material/menu';
 const { read, write, utils } = XLSX;
 
 export interface PeriodicElement {
@@ -20,15 +21,20 @@ export interface PeriodicElement {
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {
-    articel_id: 1,
-    articel_name: "test",
-    number: 1.0079
+    articel_id: 2222,
+    articel_name: "Test Articel",
+    number: 67
   }
 ];
 
 interface Cars {
   name: string,
   age: number
+}
+
+export interface Item {
+  id: number;
+  name: string;
 }
 
 type AOA = any[][];
@@ -43,10 +49,10 @@ type AOA = any[][];
 export class SearchComponent {
 
   file_header = ["articel_id", "articel_name", "number"];
-  current_data:any=[];
+  current_data: any = [];
 
   data: any = [[1, 2], [3, 4]];
-  data_json:any = {};
+  data_json: any = {};
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string = 'SheetJS.xlsx';
 
@@ -64,6 +70,54 @@ export class SearchComponent {
   name: string;
   childCompData = "child"
 
+
+  //displayedColumns: string[] = ['name'];
+
+  items = [
+    { id: 1, name: 'Item 1' },
+    { id: 2, name: 'Item 2' },
+    { id: 3, name: 'Item 3' }
+  ];
+
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+
+  contextMenuPosition = {};
+
+  onContextMenu(event: MouseEvent, item: Item) {
+    console.log(event)
+    console.log(item)
+    event.preventDefault();
+    let element = document.getElementById('right_menu');
+    let container:any = document.getElementsByClassName("cdk-overlay-connected-position-bounding-box")[0];
+    console.log(container)
+    if (element) {
+      element.style.top = "400px";
+      element.style.left = "400px";
+      container.style.top = "400px";
+      container.style.left = "400px";
+
+    }
+    this.contextMenu.menuData = { 'item': item };
+    try {
+      if (this.contextMenu['menu']) {
+        this.contextMenu['menu'].focusFirstItem('mouse');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    this.contextMenu.openMenu();
+  }
+
+  onContextMenuAction1(item: Item) {
+    alert(`Click on Action 1 for ${item.name}`);
+  }
+
+  onContextMenuAction2(item: Item) {
+    alert(`Click on Action 2 for ${item.name}`);
+  }
+
+
   openDialog(): void {
     console.log("open dialog")
     const dialogRef = this.dialog.open(DialogComponent, {
@@ -71,7 +125,7 @@ export class SearchComponent {
       data: { name: this.name, animal: this.animal }
     });
 
-    dialogRef.afterClosed().subscribe((result :any) => {
+    dialogRef.afterClosed().subscribe((result: any) => {
       console.log('The dialog was closed');
       this.animal = result;
     });
@@ -107,14 +161,14 @@ export class SearchComponent {
           //this.displayedColumns = this.file_header;
         } else {
           this.current_data.push(this.data[key as any]);
-           let cache = {
-              articel_id: this.data[key as any][1],
-              articel_name: this.data[key as any][0],
-              number: this.data[key as any][2]
-            }
-            console.log(value)
-            this.data_json[this.data[key as any][1]] = cache;
-            console.log(this.data_json);
+          let cache = {
+            articel_id: this.data[key as any][1],
+            articel_name: this.data[key as any][0],
+            number: this.data[key as any][2]
+          }
+          console.log(value)
+          this.data_json[this.data[key as any][1]] = cache;
+          console.log(this.data_json);
           //this.dataSource = new MatTableDataSource(ELEMENT_DATA); 
           //console.log(this.data[key as any]);
         }
@@ -131,7 +185,7 @@ export class SearchComponent {
   export(): void {
     console.log("download excel")
     console.log(this.data)
-    var result = Object.keys(this.data).map((key) => [key, this.data[key]['articel_name'],this.data[key]['number']]);
+    var result = Object.keys(this.data).map((key) => [key, this.data[key]['articel_name'], this.data[key]['number']]);
     console.log(result)
     //test:[] = [[1, 2], [3, 4]];
     /* generate worksheet */
@@ -148,7 +202,7 @@ export class SearchComponent {
   rows = new Array<any>();
 
 
-  name1:string = 'Reading JSON file';
+  name1: string = 'Reading JSON file';
   searchText: string;
   //data:any = [];
   finish_loading = false;
@@ -238,13 +292,13 @@ export class SearchComponent {
 
   async exportList() {
     const data = JSON.stringify({ "username": "user", "token": "12345" });
-    axios.post('http://127.0.0.1:8081/insertlist',JSON.stringify(this.data_json))
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    axios.post('http://127.0.0.1:8081/insertlist', JSON.stringify(this.data_json))
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
 
