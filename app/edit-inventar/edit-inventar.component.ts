@@ -16,6 +16,7 @@ export class EditInventarComponent implements OnInit{
   sub:any;
   page:any;
   xhr:any;
+  current_id:number;
   constructor(public route: ActivatedRoute) { 
     state$: Observable<object>;
   }
@@ -26,6 +27,7 @@ export class EditInventarComponent implements OnInit{
     .subscribe(params => {
       console.log("passed parameter: " +params['url'])
       // Defaults to 0 if no query param provided.
+      this.current_id = params['serviceId'];
       this.page = +params['serviceId'] || 0;
     });
 
@@ -60,7 +62,7 @@ export class EditInventarComponent implements OnInit{
   }
   
   increaseValue(){
-    const data = JSON.stringify({ 'id': 2, 'number': "12" });
+    const data = JSON.stringify({ 'id': this.current_id, 'number': "12" });
     axios.post('http://127.0.0.1:8081/decrease', data)
       .then(response => {
         console.log(response.data);
@@ -73,7 +75,7 @@ export class EditInventarComponent implements OnInit{
   }
 
   decreaseValue1(){
-      const data = JSON.stringify({ 'id': 2, 'number': "12" });
+      const data = JSON.stringify({ 'id': this.current_id, 'number': "12" });
       axios.post('http://127.0.0.1:8081/decrease', data)
         .then(response => {
           console.log(response.data);

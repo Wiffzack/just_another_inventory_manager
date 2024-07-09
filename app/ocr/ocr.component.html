@@ -21,7 +21,8 @@
 <div id="first_popup" class="popup" role="alert" #popupDiv>
 	<div class="popup-container">
 		<a (click)="reload()" class="popup-close img-replace">Close</a>
-		<p>{{ocr_text}}</p>
+		<!-- <p>{{ocr_text}}</p> -->
+		<input [(ngModel)]="ocr_text"  matInput>
 		<button (click)="toggleSecondInput()">Bestätigen</button>
 		<button (click)="reload()" routerLink="/ocr"  >Löschen</button>
 	</div>

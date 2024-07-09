@@ -86,9 +86,10 @@ export class QrScanComponent {
 
   public onEvent(e: ScannerQRCodeResult[], action?: any): void {
     e && action && action.pause();
-    //console.log(e);
-    console.log(e[0].value)
-    let url_cache = e[0].value;
+    console.log(e);
+    //  "https://192.168.1.155/edit?id=2"
+    console.log(e[0].value.split("?id=")[1])
+    let url_cache = e[0].value.split("?id=")[1];
     this._router.navigate(['edit'], { queryParams: { url: url_cache } })
     /* if(this.isValidHttpUrl(url_cache)){
     } */
