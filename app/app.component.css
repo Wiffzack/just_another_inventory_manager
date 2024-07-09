@@ -42,8 +42,6 @@ p {
 
   ::ng-deep .cdk-overlay-container {
     /* Do you changes here */
-    top:500px;
-    left:500px;
     position: absolute; 
     z-index: 1000;
 }

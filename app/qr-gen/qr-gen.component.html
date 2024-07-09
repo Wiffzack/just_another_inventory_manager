@@ -1,5 +1,5 @@
 <div style="text-align:center">
-	<div style="text-align:center">
+	<div *ngIf="userInput" style="text-align:center">
 		<qrcode [qrdata]="userInput" [errorCorrectionLevel]="'M'" [width]="selectedWidth" [scale]="selectedFontSize"
 			[margin]="selectedMargins" [colorDark]="colorDark"></qrcode>
 	</div>

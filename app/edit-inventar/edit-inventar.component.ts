@@ -5,7 +5,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import { DialogComponent } from '../dialog/dialog.component'; 
-
+import axios from 'axios';
 @Component({
   selector: 'app-edit-inventar',
   templateUrl: './edit-inventar.component.html',
@@ -58,13 +58,41 @@ export class EditInventarComponent implements OnInit{
       }
     }
   }
+  
+  increaseValue(){
+    const data = JSON.stringify({ 'id': 2, 'number': "12" });
+    axios.post('http://127.0.0.1:8081/decrease', data)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
-  async updateValue() {
+
+  }
+
+  decreaseValue1(){
+      const data = JSON.stringify({ 'id': 2, 'number': "12" });
+      axios.post('http://127.0.0.1:8081/decrease', data)
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+  
+  }
+
+
+
+  async decreaseValue() {
     const data = JSON.stringify({ "username": "user", "token": "12345" });
     this.xhr = new XMLHttpRequest();
     //this.xhr.withCredentials = true;
     this.xhr.onreadystatechange = this.checkRequest.bind(this);
-    this.xhr.open("GET", "http://127.0.0.1:8081/update?articel_id=1&number=2&amount=999");
+    this.xhr.open("GET", "http://127.0.0.1:8081/decrease?id=1&number=2");
     this.xhr.setRequestHeader("Content-Type", "application/json");
     this.xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     this.xhr.setRequestHeader('Access-Control-Allow-Origin', '*');

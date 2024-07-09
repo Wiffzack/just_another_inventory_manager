@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import axios from 'axios';
 import { MatTableModule } from '@angular/material/table';
@@ -11,7 +11,17 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import * as XLSX from 'xlsx';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { Overlay } from '@angular/cdk/overlay';
 const { read, write, utils } = XLSX;
+
+import { TemplateRef } from '@angular/core';
+import { TemplatePortal } from '@angular/cdk/portal';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { fromEvent, Subscription } from 'rxjs';
+import { take, filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
 
 export interface PeriodicElement {
   articel_id: number,
@@ -55,6 +65,7 @@ export class SearchComponent {
   data_json: any = {};
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string = 'SheetJS.xlsx';
+  current_column_text: string = "";
 
 
   example = {
@@ -64,40 +75,40 @@ export class SearchComponent {
   }
 
   displayedColumns: string[] = ['articel_id', 'articel_name', 'number'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  dataSource:any = new MatTableDataSource(ELEMENT_DATA);
 
   animal: string;
   name: string;
-  childCompData = "child"
+  childCompData = "child";
+  menuElem:any;
 
 
   //displayedColumns: string[] = ['name'];
 
-  items = [
-    { id: 1, name: 'Item 1' },
-    { id: 2, name: 'Item 2' },
-    { id: 3, name: 'Item 3' }
-  ];
+  users = Array.from({ length: 10 }, () => ({
+    name: "test"
+  }));
+  sub: Subscription;
+
+  @ViewChild('userMenu') userMenu: TemplateRef<any>;
+
+  overlayRef: OverlayRef | null;
+
+
 
   @ViewChild(MatMenuTrigger)
   contextMenu: MatMenuTrigger;
 
-  contextMenuPosition = {};
 
-  onContextMenu(event: MouseEvent, item: Item) {
+  contextMenuPosition = { x: '0px', y: '0px' };
+
+  onContextMenu(event: any, item: Item) {
     console.log(event)
     console.log(item)
     event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
     let element = document.getElementById('right_menu');
-    let container:any = document.getElementsByClassName("cdk-overlay-connected-position-bounding-box")[0];
-    console.log(container)
-    if (element) {
-      element.style.top = "400px";
-      element.style.left = "400px";
-      container.style.top = "400px";
-      container.style.left = "400px";
-
-    }
     this.contextMenu.menuData = { 'item': item };
     try {
       if (this.contextMenu['menu']) {
@@ -107,6 +118,17 @@ export class SearchComponent {
       console.log(e);
     }
     this.contextMenu.openMenu();
+    let container: any = document.getElementsByClassName("cdk-overlay-container")[0];
+    console.log("container")
+    console.log(container)
+    // cdk-overlay-container
+    if (element) {
+      element.style.top = event.layerY+"px";
+      element.style.left = event.layerX+"px";
+      container.style.top =  event.layerY+"px";
+      container.style.left = event.layerX+"px";
+
+    }
   }
 
   onContextMenuAction1(item: Item) {
@@ -210,18 +232,54 @@ export class SearchComponent {
   posts: any;
   xhr: any;
   item_list: any;
-  constructor(public dialog: MatDialog) {
+  constructor(private _router: Router,public dialog: MatDialog, public overlay: Overlay, public viewContainerRef: ViewContainerRef) {
     this.searchText = "";
   }
+
   ngOnInit() {
+
   }
 
+  onrightClick(event:any){
+    console.log(event);
+  }
+
+  createQRCode() {
+    this._router.navigate(['qrgen'], { queryParams: { url: this.current_column_text } })
+  }
 
   ngAfterViewInit(): void {
     this.sendRequest();
     //this.exportList();
     //this.updateValue();
     console.log("request done");
+
+    var bodyElem = document.body;
+    var rect = bodyElem.getBoundingClientRect();
+    this.menuElem = document.querySelector('.menu');
+    console.log(this.menuElem)
+    var menuX = this.menuElem.clientWidth;
+    var menuY = this.menuElem.clientHeight;
+    console.log(bodyElem.getBoundingClientRect());
+
+    let table_raw: any = document.getElementsByClassName("table_value")[0];
+    console.log(table_raw)
+    table_raw.addEventListener('contextmenu', (event:any) => {
+      console.log(event)
+      console.log(event.target.innerHTML)
+      console.log(event.target.dataset.attrId)
+      console.log("context menu called"); 
+      event.preventDefault();
+      this.menuElem.style.left = event.layerX+"px";
+      this.menuElem.style.top = event.layerY+"px";
+      var { clientX, clientY } = event;
+      this.menuElem.style.transform = 'scale(1)';
+      this.current_column_text = event.target.dataset.attrId;
+    });
+    document.addEventListener('click', (event) => {
+      this.menuElem.style.transform = 'scale(0)';
+    });
+
   }
 
   yourFunction(input: any) {

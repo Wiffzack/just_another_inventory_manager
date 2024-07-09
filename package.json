@@ -23,6 +23,7 @@
     "@zxing/ngx-scanner": "^18.0.0",
     "angularx-qrcode": "^17.0.1",
     "axios": "^1.7.2",
+    "merge-images": "^2.0.0",
     "ngx-scanner-qrcode": "^1.6.9",
     "nlpjs": "^0.0.2",
     "rxjs": "~7.8.0",

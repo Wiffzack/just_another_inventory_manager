@@ -1,18 +1,29 @@
 import { Component } from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
+import { SingletonAService } from '../singleton-a.service';
 @Component({
   selector: 'app-qr-gen',
   templateUrl: './qr-gen.component.html',
   styleUrl: './qr-gen.component.css'
 })
 export class QrGenComponent {
-  constructor() { }
+  constructor(public route: ActivatedRoute, public share: SingletonAService) {
+    this.userInput = this.share.address;
+    this.sub = this.route
+      .queryParams
+      .subscribe(params => {
+        console.log("passed parameter: " + params['url'])
+        // Defaults to 0 if no query param provided.
+        this.userInput = this.share.address + params['url'];
+        console.log(this.userInput)
+      });
+  }
 
-  color:any;
+  color: any;
+  sub: any;
+  page: any;
 
-  ngOnInit() { }
-
-  userInput = "123";
+  userInput: string = "123";
 
   widths = [100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600];
   selectedWidth = this.widths[3];
@@ -25,4 +36,19 @@ export class QrGenComponent {
 
   colorDark = "#000000ff";
   colorLight = "#ffffffff";
+
+  ngOnInit() {
+    console.log(this.share.address)
+    this.userInput = this.share.address;
+    this.sub = this.route
+      .queryParams
+      .subscribe((params) => {
+        console.log("passed parameter: " + params['url'])
+        // Defaults to 0 if no query param provided.
+        this.userInput = this.share.address + params['url'];
+        console.log(this.userInput)
+      });
+  }
+
+
 }

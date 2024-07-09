@@ -88,14 +88,75 @@ def insert_execel_artikel():
 @app.route('/addentry', methods=['GET', 'POST'])
 @cross_origin()
 def insert_single_entry():
+    articel_id=0
     cache = request.get_data()
     cache_json =  json.loads(cache)
     print (cache_json)
-    collection.insert_one({'articel_name':cache_json['name'] , 'number':cache_json['number']  })
+    cache = collection.find({}, {"_id": 0 }).sort({'articel_id':-1}).limit(1)
+    print (cache)
+    for record in cache: 
+        foodict = {k: v for k, v in record.items() if k.startswith('articel_id')}
+        articel_id = int((foodict['articel_id'])) + 1
+    insert_entry = {'articel_id':articel_id,'articel_name':cache_json['name'] , 'number':cache_json['number']  }
+    print (insert_entry)
+    collection.insert_one(insert_entry)
     test = {
-        "test": "test"
+        "status": "okay"
     }
     return jsonify(test)
+
+
+@app.route('/decrease', methods=['GET', 'POST'])
+@cross_origin()
+def decrease_single_entry():
+    cache_id = 0
+    neg_number = 0
+    cache = request.get_data()
+    print (cache.decode("utf-8"))
+    cache_json =  json.loads(cache)
+    print ("data here")
+    print (cache_json)
+    for test in cache_json:
+        if(test in "number"):
+            neg_number = cache_json[test] * -1 
+        if(test in "id"):
+            cache_id = cache_json[test]
+    print (int(cache_json["number"])*-1)
+    print  (cache_json["id"])
+
+    collection.update_one({'articel_id': int(cache_json['id'])}, {"$inc": { "number": int(cache_json["number"])*-1  }})
+    #collection.update_one({'articel_id': 2}, {"$inc": { "number": -5  }})
+    test = {
+        "status": "okay"
+    }
+    return jsonify(test)
+
+
+@app.route('/increase', methods=['GET', 'POST'])
+@cross_origin()
+def increase_single_entry():
+    cache_id = 0
+    neg_number = 0
+    cache = request.get_data()
+    print (cache.decode("utf-8"))
+    cache_json =  json.loads(cache)
+    print ("data here")
+    print (cache_json)
+    for test in cache_json:
+        if(test in "number"):
+            neg_number = cache_json[test] * -1 
+        if(test in "id"):
+            cache_id = cache_json[test]
+    print (int(cache_json["number"])*-1)
+    print  (cache_json["id"])
+
+    collection.update_one({'articel_id': int(cache_json['id'])}, {"$inc": { "number": int(cache_json["number"])  }})
+    #collection.update_one({'articel_id': 2}, {"$inc": { "number": -5  }})
+    test = {
+        "status": "okay"
+    }
+    return jsonify(test)
+
 
 @app.route('/update2', methods=['GET', 'POST'])
 def index():
