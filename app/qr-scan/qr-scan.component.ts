@@ -97,21 +97,6 @@ export class QrScanComponent {
     } */
   }
 
-  async getVideoDevices() {
-    let video;
-    const constraints = {
-      video: {
-        facingMode: {
-          ideal: "environment"
-        }
-      }
-    };
-
-    await navigator.mediaDevices.getUserMedia(constraints)
-      .then((stream) => { video = stream; return video })
-      .catch(console.error);
-  }
-
   public handle(action: any, fn: string): void {
     const constraints = {
       video: {

@@ -7,16 +7,32 @@
     <div class="popup-container" style="position: relative; height: 50%; width: 70%;">
         <a (click)="reload()" class="popup-close img-replace">Close</a>
         <!-- <p>{{ocr_text}}</p> -->
-        <div class="number-control" style="    position: relative;left: 36%;">
-            <div (click)="decreaseInput()" class="number-left" style="position: absolute; zoom: 7; left: -40px;"></div>
-            <input [(ngModel)]="input_value" matInput type="number" name="number" class="number-quantity">
-            <div (click)="increaseInput()" class="number-right" style="position: absolute; zoom: 7; left: 40px;"></div>
+        <div class="number-control" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);">
+            <input style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" [(ngModel)]="input_value" matInput type="number" name="number" class="number-quantity">
         </div>
-        <div style="position: absolute; left: 2px; zoom: 9; bottom: 50%;">
+        <div style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);zoom:4">
             <button (click)="send()" >Bestätigen</button>
         </div>
-        <div style="position: absolute; right: 2%; bottom: 25%;zoom: 9">
+        <div style="position: absolute; top: 85%; left: 50%; transform: translate(-50%, -50%);zoom:4">
             <button routerLink="/ocr">Abbrechen</button>
         </div>
     </div>
 </div>
+
+
+<!-- <div id="first_popup" class="popup" role="alert" #popupDiv>
+    <div class="popup-container" style="position: relative; height: 50%; width: 70%;">
+        <a (click)="reload()" class="popup-close img-replace">Close</a>
+        <div class="number-control" style="    ">
+            <div (click)="decreaseInput()" class="number-left" style="position: absolute;; left: -40px;"></div>
+            <input [(ngModel)]="input_value" matInput type="number" name="number" class="number-quantity">
+            <div (click)="increaseInput()" class="number-right" style="position: absolute; ; left: 40px;"></div>
+        </div>
+        <div style="">
+            <button (click)="send()" >Bestätigen</button>
+        </div>
+        <div style="">
+            <button routerLink="/ocr">Abbrechen</button>
+        </div>
+    </div>
+</div> -->
