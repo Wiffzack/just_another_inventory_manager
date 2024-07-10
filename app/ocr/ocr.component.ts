@@ -9,12 +9,17 @@ import { DialogComponent } from '../dialog/dialog.component';
 import axios from 'axios';
 import { NgxScannerQrcodeComponent, NgxScannerQrcodeService } from 'ngx-scanner-qrcode';
 import { SingletonAService } from '../singleton-a.service';
+import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-ocr',
   templateUrl: './ocr.component.html',
   styleUrl: './ocr.component.css'
 })
 export class OcrComponent {
+
+  profileForm = new FormGroup({
+    personalizedMessage: new FormControl('')
+  });
 
   captures: string[] = [];
   error: any;
@@ -24,10 +29,10 @@ export class OcrComponent {
   second_input: any;
   second_input_value: number;
 
-  constraints:any;
+  constraints: any;
 
   worker: any;
-  constructor(public singleton: SingletonAService,private qrcode: NgxScannerQrcodeService,public route: ActivatedRoute, public dialog: MatDialog, private _router: Router) {
+  constructor(public singleton: SingletonAService, private qrcode: NgxScannerQrcodeService, public route: ActivatedRoute, public dialog: MatDialog, private _router: Router) {
   }
   name = 'Angular ';
 
@@ -69,7 +74,7 @@ export class OcrComponent {
     this.second_input.classList.toggle('is-visible');
   }
 
-  reload(){
+  reload() {
     location.reload();
   }
 
@@ -98,18 +103,18 @@ export class OcrComponent {
     //this.openModal("Success", text)
   }
 
-  blackwhite(imageData:any){
-      for (var index = 0; index < imageData.data.length; index += 4) {
-          var v = (imageData.data[index] + imageData.data[index + 1] + imageData.data[index + 2]) / 3;
-          imageData.data[index] = v;
-          imageData.data[index + 1] = v;
-          imageData.data[index + 2] = v;
-      }
-      return imageData;
+  blackwhite(imageData: any) {
+    for (var index = 0; index < imageData.data.length; index += 4) {
+      var v = (imageData.data[index] + imageData.data[index + 1] + imageData.data[index + 2]) / 3;
+      imageData.data[index] = v;
+      imageData.data[index + 1] = v;
+      imageData.data[index + 2] = v;
+    }
+    return imageData;
   }
 
-  checkcamera(){
-    navigator.mediaDevices.enumerateDevices().then((e)=>{
+  checkcamera() {
+    navigator.mediaDevices.enumerateDevices().then((e) => {
       console.log(e)
     })
   }
@@ -121,7 +126,7 @@ export class OcrComponent {
     const ret = await this.worker.recognize(image);
     if (ret.data.text) {
       this.add_to_db(ret.data.text, event, element)
-    }else{
+    } else {
       this.removeCurrent()
     }
     await this.worker.terminate();
@@ -161,10 +166,10 @@ export class OcrComponent {
   }
 
   ngOnDestroy() {
-    try{
-    this.video.nativeElement.pause();
-    this.video.nativeElement.srcObject = "";
-    }catch(e){
+    try {
+      this.video.nativeElement.pause();
+      this.video.nativeElement.srcObject = "";
+    } catch (e) {
       console.log('Error');
     }
   }
@@ -173,7 +178,7 @@ export class OcrComponent {
     this.constraints = {
       video: {
         // these both not work with old constraints...it's new syntax
-        deviceId:  this.singleton.device
+        deviceId: this.singleton.device
         // deviceId: { exact: this.videoSources[0].id }
       }
     };

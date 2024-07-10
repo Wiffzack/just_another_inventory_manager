@@ -22,9 +22,21 @@
 	<div class="popup-container">
 		<a (click)="reload()" class="popup-close img-replace">Close</a>
 		<!-- <p>{{ocr_text}}</p> -->
-		<input [(ngModel)]="ocr_text"  matInput>
-		<button (click)="toggleSecondInput()">Bestätigen</button>
-		<button (click)="reload()" routerLink="/ocr"  >Löschen</button>
+		<form [formGroup]="profileForm">
+			<div class="form-group col-10">
+			  <textarea
+				#val
+				class="form-control"
+				id="exampleFormControlTextarea1"
+				formControlName="personalizedMessage"
+				rows="6"
+				style="position: relative; width: 100%; font-size: x-large;"
+				 [(ngModel)]="ocr_text"
+			  ></textarea>
+			</div>
+		  </form>
+		<button (click)="toggleSecondInput()" style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);zoom:3;margin-bottom: 10px;width: 95%;">Bestätigen</button>
+		<button (click)="reload()" routerLink="/ocr" style="position: absolute; top: 85%; left: 50%; transform: translate(-50%, -50%);zoom:3;width: 95%;"  >Löschen</button>
 	</div>
 </div>
 <div id="second_popup" class="popup" role="alert" #popupDiv2>
@@ -32,11 +44,13 @@
 		<a (click)="reload()"  class="popup-close img-replace">Close</a>
 		<td><mat-form-field class="example-full-width center">
 				<!-- <mat-label>Menge</mat-label> -->
-				<input [(ngModel)]="second_input_value"  matInput #postalCode maxlength="5" placeholder="1" value="1">
+				  
+
+				<input [(ngModel)]="second_input_value"  matInput #postalCode maxlength="5" placeholder="1" value="1" >
 				<mat-hint align="end"></mat-hint>
 			</mat-form-field></td>
-		<button (click)="reload()" routerLink="/ocr" (click)="add_new_entry()">Bestätigen</button>
-		<button (click)="reload()" routerLink="/ocr" >Löschen</button>
+		<button (click)="reload()" routerLink="/ocr" (click)="add_new_entry()" style="position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);zoom:3;margin-bottom: 10px;width: 95%;">Bestätigen</button>
+		<button (click)="reload()" routerLink="/ocr" style="position: absolute; top: 85%; left: 50%; transform: translate(-50%, -50%);zoom:3;width: 95%;" >Löschen</button>
 	</div>
 </div>
 

@@ -19,6 +19,7 @@ export class QrScanComponent {
 
   videoDevice: any;
   back_camera: any;
+  camera_list: any;
   constructor(public singleton: SingletonAService, private qrcode: NgxScannerQrcodeService, private route: ActivatedRoute, private _router: Router) { }
 
 
@@ -62,7 +63,30 @@ export class QrScanComponent {
     this.singleton.device = device;
   }
 
+  async getcamera() {
+    await navigator.mediaDevices.getUserMedia({ video: true });
+    let devices = await navigator.mediaDevices.enumerateDevices();
+    devices = devices.filter((device) => device.kind == "videoinput");
+    if (devices.length != 0) {
+      this.camera_list = devices;
+    }
+  }
+
+  async getcameraold() {
+    await navigator.mediaDevices.enumerateDevices().then(function (devices) {
+      if (devices.length != 0) {
+        this.camera_list = devices;
+      }
+      /*       for(var i = 0; i < devices.length; i ++){
+                var device = devices[i];
+                console.log(device)
+            }; */
+    });
+  }
+
   ngAfterViewInit(): void {
+    this.getcamera();
+    this.getcameraold();
 
     try {
       this.action.isReady.subscribe((res: any) => {
@@ -98,6 +122,8 @@ export class QrScanComponent {
   }
 
   public handle(action: any, fn: string): void {
+
+
     const constraints = {
       video: {
         facingMode: {
@@ -110,15 +136,17 @@ export class QrScanComponent {
         console.log(stream)
         const playDeviceFacingBack = (devices: any[]) => {
           // front camera or back camera check here!
-          
+
           const device = devices.find(f => (/back|rear|environment/gi.test(f.label))); // Default Back Facing Camera
           //if()
-          action.playDevice(device ? device.deviceId : devices[1].deviceId);
-          /* if (stream) {
+          //alert(device ? device.deviceId : devices[1].deviceId)
+          if (stream.id) {
+            console.log("first ")
             action.playDevice(stream.id);
           } else {
-            action.playDevice(device ? device.deviceId : devices[0].deviceId);
-          } */
+            console.log("second")
+            action.playDevice(this.camera_list );
+          }
         }
 
         if (fn === 'start') {
