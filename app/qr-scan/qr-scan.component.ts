@@ -110,9 +110,10 @@ export class QrScanComponent {
         console.log(stream)
         const playDeviceFacingBack = (devices: any[]) => {
           // front camera or back camera check here!
+          
           const device = devices.find(f => (/back|rear|environment/gi.test(f.label))); // Default Back Facing Camera
           //if()
-          action.playDevice(device ? device.deviceId : devices[0].deviceId);
+          action.playDevice(device ? device.deviceId : devices[1].deviceId);
           /* if (stream) {
             action.playDevice(stream.id);
           } else {

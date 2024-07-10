@@ -140,7 +140,7 @@ export class OcrComponent {
       console.log(devices)
       // front camera or back camera check here!
       const device = devices.find(f => (/back|rear|environment/gi.test(f.label))); // Default Back Facing Camera
-      action.playDevice(device ? device.deviceId : devices[0].deviceId);
+      action.playDevice(device ? device.deviceId : devices[1].deviceId);
     }
 
     if (fn === 'start') {
