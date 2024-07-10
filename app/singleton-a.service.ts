@@ -8,7 +8,8 @@ export class SingletonAService {
 
   main: any;
   device:any;
-  address="https://192.168.1.155/edit?id="
+  address="https://127.0.0.1:4200/edit?id=";
+  mobile:any;
 
 
   @ViewChild('action') action!: NgxScannerQrcodeComponent;

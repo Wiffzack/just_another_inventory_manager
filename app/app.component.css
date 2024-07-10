@@ -45,3 +45,59 @@ p {
     position: absolute; 
     z-index: 1000;
 }
+
+
+
+
+
+/* Icon separator */
+.btn-sep {
+  padding: 25px 25px;
+}
+
+.btn-sep:before {
+  background: rgba(0,0,0,0.15);
+}
+
+/* Button 1 */
+.btn-1 {
+  background: black;
+  color: #fff;
+}
+
+.btn-1:hover {
+  background: #2980b9;
+}
+
+.btn-1:active {
+  background: #2980b9;
+  top: 2px;
+}
+
+.btn-1:before {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  line-height: 3;
+  font-size: 140%;
+  width: 60px;
+}
+
+
+.example-container {
+  width: 500px;
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.example-sidenav-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-sidenav {
+  padding: 20px;
+}

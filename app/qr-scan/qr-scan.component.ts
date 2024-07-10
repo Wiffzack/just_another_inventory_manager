@@ -17,7 +17,8 @@ import { SingletonAService } from '../singleton-a.service';
 })
 export class QrScanComponent {
 
-
+  videoDevice: any;
+  back_camera: any;
   constructor(public singleton: SingletonAService, private qrcode: NgxScannerQrcodeService, private route: ActivatedRoute, private _router: Router) { }
 
 
@@ -50,25 +51,26 @@ export class QrScanComponent {
   public percentage = 80;
   public quality = 100;
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.handle(this.action, 'stop');
     this.action.pause();
-    this.action.src ="";
+    this.action.src = "";
   }
 
-  setVideoDevice(device:any){
+  setVideoDevice(device: any) {
     console.log(device)
-    this.singleton.device =device;
+    this.singleton.device = device;
   }
 
-  ngAfterViewInit(): void { 
-     try{
-    this.action.isReady.subscribe((res: any) => {
-      this.handle(this.action, 'start');
-    });
-  }catch(e){
-    console.log('Error');
-  } 
+  ngAfterViewInit(): void {
+
+    try {
+      this.action.isReady.subscribe((res: any) => {
+        this.handle(this.action, 'start');
+      });
+    } catch (e) {
+      console.log('Error');
+    }
 
   }
 
@@ -95,21 +97,53 @@ export class QrScanComponent {
     } */
   }
 
+  async getVideoDevices() {
+    let video;
+    const constraints = {
+      video: {
+        facingMode: {
+          ideal: "environment"
+        }
+      }
+    };
+
+    await navigator.mediaDevices.getUserMedia(constraints)
+      .then((stream) => { video = stream; return video })
+      .catch(console.error);
+  }
+
   public handle(action: any, fn: string): void {
-    const playDeviceFacingBack = (devices: any[]) => {
-      // front camera or back camera check here!
-      const device = devices.find(f => (/back|rear|environment/gi.test(f.label))); // Default Back Facing Camera
-      action.playDevice(device ? device.deviceId : devices[0].deviceId);
-    }
+    const constraints = {
+      video: {
+        facingMode: {
+          ideal: "environment"
+        }
+      }
+    };
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then((stream) => {
+        console.log(stream)
+        const playDeviceFacingBack = (devices: any[]) => {
+          // front camera or back camera check here!
+          const device = devices.find(f => (/back|rear|environment/gi.test(f.label))); // Default Back Facing Camera
+          //if()
+          if (stream) {
+            action.playDevice(stream.id);
+          } else {
+            action.playDevice(device ? device.deviceId : devices[0].deviceId);
+          }
+        }
 
-    if (fn === 'start') {
-      action[fn](playDeviceFacingBack).subscribe((r: any) => console.log(fn, r), alert);
-    } else {
-      action[fn]().subscribe((r: any) => {
-        console.log(fn, r)
+        if (fn === 'start') {
+          action[fn](playDeviceFacingBack).subscribe((r: any) => console.log(fn, r), alert);
+        } else {
+          action[fn]().subscribe((r: any) => {
+            console.log(fn, r)
 
-      } , alert);
-    }
+          }, alert);
+        }
+      })
+      .catch(console.error);
   }
 
   public onDowload(action: NgxScannerQrcodeComponent) {

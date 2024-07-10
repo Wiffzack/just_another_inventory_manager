@@ -1,40 +1,52 @@
-<ul>
-  <li>
-    <a routerLinkActive="active-link"
-       routerLink="scan">
-      Scan QR
-    </a>
-  </li>
-  
-  <li>
-    <a routerLinkActive="active-link"
-       routerLink="edit">
-      Edit Inventar
-    </a>
-  </li>
+<div *ngIf="!mobile">
+  <ul style="position: relative; width: 95vw;">
+    <li>
+      <a routerLinkActive="active-link" routerLink="scan">
+        Scan QR
+      </a>
+    </li>
 
-  <li>
-    <a routerLinkActive="active-link"
-       routerLink="search">
-      Search
-    </a>
-  </li>
+    <li>
+      <a routerLinkActive="active-link" routerLink="edit">
+        Edit Inventar
+      </a>
+    </li>
 
-  <li>
-    <a routerLinkActive="active-link"
-       routerLink="ocr">
-      OCR
-    </a>
-  </li>
-  <li>
-    <a routerLinkActive="active-link"
-       routerLink="qrgen">
-      QR Gen.
-    </a>
-  </li>
+    <li>
+      <a routerLinkActive="active-link" routerLink="search">
+        Search
+      </a>
+    </li>
 
+    <li>
+      <a routerLinkActive="active-link" routerLink="ocr">
+        OCR
+      </a>
+    </li>
+    <li>
+      <a routerLinkActive="active-link" routerLink="qrgen">
+        QR Gen.
+      </a>
+    </li>
+  </ul>
+  <br>
+</div>
 
 
-</ul>
-<br>
+
+<!-- <div *ngIf="mobile">
+  <div id="context_menu" class="menu">
+    <div>
+      <button routerLinkActive="active-link" routerLink="scan" class="btn btn-1 btn-sep icon-info"> Scan QR</button>
+    </div>
+    <div>
+      <button routerLinkActive="active-link" routerLink="ocr" class="btn btn-1 btn-sep icon-info"> OCR</button>
+    </div>
+  </div>
+</div> -->
+
+
+
+
+
 <router-outlet></router-outlet>

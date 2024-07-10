@@ -73,6 +73,8 @@ import { QrGenComponent } from './qr-gen/qr-gen.component';
 import { QRCodeModule } from "angularx-qrcode";
 import { PopupComponent } from './popup/popup.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,6 +88,7 @@ import { PopupComponent } from './popup/popup.component';
     PopupComponent,
   ],
   imports: [
+    MatSidenavModule,
     DialogComponent,
     MatDialogModule,
     BrowserAnimationsModule,

@@ -17,18 +17,45 @@ export class EditInventarComponent implements OnInit{
   page:any;
   xhr:any;
   current_id:number;
+  input_value:any=1;
+  first_input:any;
+  current_value_change_selection:string;
+
+
   constructor(public route: ActivatedRoute) { 
     state$: Observable<object>;
   }
 
+  decreaseInput(){
+    this.input_value = this.input_value - 1;
+  }
+
+  increaseInput(){
+    this.input_value = this.input_value + 1;
+  }
+
+  ngAfterViewInit() {
+    this.first_input = document.getElementById("first_popup");
+  }
+
+  PopUp() {
+    this.first_input.classList.toggle('is-visible');
+  }
+
+  
+  reload(){
+    location.reload();
+  }
+
   ngOnInit() {
+    this.first_input = document.getElementById("first_popup");
     this.sub = this.route
     .queryParams
     .subscribe(params => {
-      console.log("passed parameter: " +params['url'])
+      console.log("passed parameter: " +params['id'])
       // Defaults to 0 if no query param provided.
-      this.current_id = params['serviceId'];
-      this.page = +params['serviceId'] || 0;
+      this.current_id = params['id'];
+      this.page = +params['id'] || 0;
     });
 
     this.state$ = this.route.paramMap
@@ -60,9 +87,30 @@ export class EditInventarComponent implements OnInit{
       }
     }
   }
-  
-  increaseValue(){
-    const data = JSON.stringify({ 'id': this.current_id, 'number': "12" });
+
+  send(){
+    if(this.current_value_change_selection=="inc"){
+      this.sendIncrease();
+    }else{
+      this.sendDecrease();
+    }
+  }
+
+  sendIncrease(){
+    const data = JSON.stringify({ 'id': this.current_id, 'number': this.input_value });
+    console.log(data)
+    axios.post('http://127.0.0.1:8081/increase', data)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  sendDecrease(){
+    const data = JSON.stringify({ 'id': this.current_id, 'number': this.input_value });
+    console.log(data)
     axios.post('http://127.0.0.1:8081/decrease', data)
       .then(response => {
         console.log(response.data);
@@ -70,36 +118,16 @@ export class EditInventarComponent implements OnInit{
       .catch(error => {
         console.error(error);
       });
-
-
   }
 
-  decreaseValue1(){
-      const data = JSON.stringify({ 'id': this.current_id, 'number': "12" });
-      axios.post('http://127.0.0.1:8081/decrease', data)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-
-  
+  increaseValue(){
+    this.current_value_change_selection ="inc"
+    this.PopUp();
   }
 
-
-
-  async decreaseValue() {
-    const data = JSON.stringify({ "username": "user", "token": "12345" });
-    this.xhr = new XMLHttpRequest();
-    //this.xhr.withCredentials = true;
-    this.xhr.onreadystatechange = this.checkRequest.bind(this);
-    this.xhr.open("GET", "http://127.0.0.1:8081/decrease?id=1&number=2");
-    this.xhr.setRequestHeader("Content-Type", "application/json");
-    this.xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    this.xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-    this.xhr.send(data);
-
+  decreaseValue(){
+    this.current_value_change_selection ="dec"
+    this.PopUp();
   }
 
 }
