@@ -64,11 +64,17 @@ export class QrScanComponent {
   }
 
   async getcamera() {
+    const constraints2 = {
+      video: {
+        facingMode: {
+          ideal: "environment"
+        }
+      }
+    };
     await navigator.mediaDevices.getUserMedia({ video: true });
-    let devices = await navigator.mediaDevices.enumerateDevices();
-    devices = devices.filter((device) => device.kind == "videoinput");
-    if (devices.length != 0) {
-      this.camera_list = devices;
+    const stream:any = await navigator.mediaDevices.getUserMedia(constraints2);
+    if (stream) {
+      this.camera_list = stream;
     }
   }
 
@@ -140,13 +146,8 @@ export class QrScanComponent {
           const device = devices.find(f => (/back|rear|environment/gi.test(f.label))); // Default Back Facing Camera
           //if()
           //alert(device ? device.deviceId : devices[1].deviceId)
-          if (stream.id) {
-            console.log("first ")
-            action.playDevice(stream.id);
-          } else {
-            console.log("second")
-            action.playDevice(this.camera_list );
-          }
+            action.playDevice(this.camera_list);
+        
         }
 
         if (fn === 'start') {
