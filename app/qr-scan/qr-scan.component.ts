@@ -71,8 +71,8 @@ export class QrScanComponent {
         }
       }
     };
-    await navigator.mediaDevices.getUserMedia({ video: true });
     const stream:any = await navigator.mediaDevices.getUserMedia(constraints2);
+    console.log(stream);
     if (stream) {
       this.camera_list = stream;
     }
@@ -92,7 +92,7 @@ export class QrScanComponent {
 
   ngAfterViewInit(): void {
     this.getcamera();
-    this.getcameraold();
+    //this.getcameraold();
 
     try {
       this.action.isReady.subscribe((res: any) => {
@@ -145,8 +145,11 @@ export class QrScanComponent {
 
           const device = devices.find(f => (/back|rear|environment/gi.test(f.label))); // Default Back Facing Camera
           //if()
+          console.log(device)
           //alert(device ? device.deviceId : devices[1].deviceId)
-            action.playDevice(this.camera_list);
+          // stream
+          action.playDevice(stream.id);
+          //action.playDevice(device ? device.deviceId : devices[0].deviceId);
         
         }
 

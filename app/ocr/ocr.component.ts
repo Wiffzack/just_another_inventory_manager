@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { createWorker } from 'tesseract.js';
+import { createWorker, PSM } from 'tesseract.js';
 import { AfterViewInit, ElementRef, ViewChild } from "@angular/core";
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -119,10 +119,19 @@ export class OcrComponent {
     })
   }
 
+  async loadSettings(){
+      await this.worker.setParameters({
+        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ',
+        //tessedit_pageseg_mode: PSM.RAW_LINE	
+      });
+  }
+
   async ocr(image: any, event: any, element: any) {
-    this.worker = await createWorker('eng', 1, {
+    this.worker = await createWorker('eng', 1,{
+
       logger: (m) => console.log(m),
     });
+    this.loadSettings();
     const ret = await this.worker.recognize(image);
     if (ret.data.text) {
       this.add_to_db(ret.data.text, event, element)
@@ -155,13 +164,13 @@ export class OcrComponent {
     }
   }
 
-  async ngAfterViewInit() {
+  ngAfterViewInit() {
 
     this.checkcamera();
 
     this.second_input = document.getElementById("second_popup");
     this.first_input = document.getElementById("first_popup");
-    await this.setupDevices();
+    this.setupDevices();
     //this.ocr();
   }
 
@@ -179,7 +188,8 @@ export class OcrComponent {
       video: {
         // these both not work with old constraints...it's new syntax
         deviceId: this.singleton.device
-        // deviceId: { exact: this.videoSources[0].id }
+        //deviceId: "e126ad534606884da2c5f73b48d38e40069e7374496cab3de091b821911ee5c1"
+        //deviceId: { exact: "e126ad534606884da2c5f73b48d38e40069e7374496cab3de091b821911ee5c1" }
       }
     };
     const constraints2 = {
@@ -189,7 +199,6 @@ export class OcrComponent {
         }
       }
     };
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
         // { video: true }
         // this.constraints
@@ -205,7 +214,7 @@ export class OcrComponent {
       } catch (e) {
         this.error = e;
       }
-    }
+  
   }
 
   capture() {
