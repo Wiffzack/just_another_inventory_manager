@@ -1,6 +1,6 @@
 
 <div class="video-container" *ngIf="!error">
-	<video style="position: relative;width: 100%;" [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" 
+	<video style="position: relative;width: 99%;" [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" 
 		autoplay></video>
 	<canvas [class.show]="isCaptured" [class.hide]="!isCaptured" #canvas id="canvas" [width]="WIDTH"
 		[height]="HEIGHT"></canvas>

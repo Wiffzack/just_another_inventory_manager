@@ -182,9 +182,19 @@ export class OcrComponent {
         // deviceId: { exact: this.videoSources[0].id }
       }
     };
+    const constraints2 = {
+      video: {
+        facingMode: {
+          ideal: "environment"
+        }
+      }
+    };
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia(this.constraints);
+        // { video: true }
+        // this.constraints
+        const stream:any = await navigator.mediaDevices.getUserMedia(constraints2);
+        console.log(stream)
         if (stream) {
           this.video.nativeElement.srcObject = stream;
           this.video.nativeElement.play();

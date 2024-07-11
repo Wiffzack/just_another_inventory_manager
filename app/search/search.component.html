@@ -45,7 +45,8 @@ transition: all 250ms;" (click)="export()" class="container-btn-file1">
 
 <!--  <mat-form-field style="margin-top: 10px;">
   <mat-label>Filter</mat-label> -->
-<input style="position: relative;width: 95%;margin: 10px;left:-10px" matInput (keyup)="applyFilter($event)"
+<input style="position: relative;position: relative;
+    width: 58rem;;margin: 10px;left:-10px" matInput (keyup)="applyFilter($event)"
   placeholder="Filter..." #input>
 <!-- </mat-form-field>
  -->
@@ -70,7 +71,7 @@ transition: all 250ms;" (click)="export()" class="container-btn-file1">
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
  -->
-<div class="table_value">
+<div class="table_value" style="position: relative;width: 58rem;">
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container>
       <ng-container matColumnDef="articel_id">
